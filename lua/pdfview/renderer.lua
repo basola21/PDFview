@@ -108,22 +108,4 @@ function M.previous_page()
   end
 end
 
--- Function to set up key mappings for navigation
-function M.setup_keymaps(buf)
-  local opts = { noremap = true, silent = true, buffer = buf }
-
-  -- Quit PDFview
-  vim.api.nvim_buf_set_keymap(buf, "n", "q", ":bd!<CR>", opts)
-
-  -- Next page
-  vim.api.nvim_buf_set_keymap(buf, "n", "J", "<Cmd>lua require('pdfview.renderer').next_page()<CR>", opts)
-
-  -- Previous page
-  vim.api.nvim_buf_set_keymap(buf, "n", "K", "<Cmd>lua require('pdfview.renderer').previous_page()<CR>", opts)
-
-  -- Optionally, map PageDown and PageUp
-  vim.api.nvim_buf_set_keymap(buf, "n", "<PageDown>", "<Cmd>lua require('pdfview.renderer').next_page()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(buf, "n", "<PageUp>", "<Cmd>lua require('pdfview.renderer').previous_page()<CR>", opts)
-end
-
 return M
