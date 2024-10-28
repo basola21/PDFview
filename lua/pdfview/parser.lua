@@ -13,10 +13,11 @@ function M.extract_text()
   local cmd = string.format('pdftotext -layout "%s" -', pdf_path)
   local handle = io.popen(cmd)
   local result = handle:read("*a")
-  local success, error, exit_code = handle:close()
+  local success, exit_reason = handle:close()
 
-  if not success or exit_code ~= 0 then
-    vim.api.nvim_err_writeln(string.format("PDFview: Failed to extract text from PDF. %s - %.2f ",error,exit_code))
+  if not success then
+    vim.api.nvim_err_writeln(string.format("PDFview: Failed to extract text from PDF. Exit reason: %s",
+      exit_reason or "Unknown error"))
     return nil
   end
 
@@ -24,4 +25,3 @@ function M.extract_text()
 end
 
 return M
-
