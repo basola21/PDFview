@@ -2,7 +2,6 @@ local M = {}
 
 -- Function to extract text from PDF using pdftotext
 function M.extract_text(pdf_path)
-  -- Check if the file exists
   if vim.fn.filereadable(pdf_path) == 0 then
     vim.api.nvim_err_writeln("PDFview: File does not exist: " .. pdf_path)
     return nil
@@ -22,7 +21,9 @@ function M.extract_text(pdf_path)
   local success, _, exit_code = handle:close()
 
   if not success or exit_code ~= 0 then
-    vim.api.nvim_err_writeln("PDFview: Failed to extract text from PDF.")
+    vim.api.nvim_err_writeln(string.format(
+      "PDFview: Failed to extract text from PDF: %s\nExit Code: %d\nError Output: %s",
+      pdf_path, exit_code, result))
     return nil
   end
 
