@@ -83,9 +83,6 @@ function M.display_text(text)
 
   -- Open a new window with the buffer
   vim.api.nvim_set_current_buf(buf)
-
-  -- Set up key mappings for navigation
-  M.setup_keymaps(buf)
 end
 
 -- Function to go to the next page
