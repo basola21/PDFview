@@ -16,7 +16,7 @@ function M.extract_text()
   local success, error, exit_code = handle:close()
 
   if not success or exit_code ~= 0 then
-    vim.api.nvim_err_writeln(string.format("PDFview: Failed to extract text from PDF. %s - %s ",error,exit_code))
+    vim.api.nvim_err_writeln(string.format("PDFview: Failed to extract text from PDF. %s - %.2f ",error,exit_code))
     return nil
   end
 
