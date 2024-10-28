@@ -13,10 +13,10 @@ function M.extract_text()
   local cmd = string.format('pdftotext -layout "%s" -', pdf_path)
   local handle = io.popen(cmd)
   local result = handle:read("*a")
-  local success, _, exit_code = handle:close()
+  local success, error, exit_code = handle:close()
 
   if not success or exit_code ~= 0 then
-    vim.api.nvim_err_writeln("PDFview: Failed to extract text from PDF.")
+    vim.api.nvim_err_writeln(string.format("PDFview: Failed to extract text from PDF. %s - %s ",error,exit_code))
     return nil
   end
 
