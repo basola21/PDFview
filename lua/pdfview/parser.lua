@@ -11,7 +11,6 @@ function M.extract_text(pdf_path)
 
   -- Use pdftotext with the -layout option
   local cmd = string.format('pdftotext -layout %s -', escaped_pdf_path)
-  vim.api.nvim_out_write("Running command: " .. cmd .. "\n") -- Debug output
 
   -- Use vim.fn.system to run the command and capture output
   local result = vim.fn.system(cmd)
