@@ -11,12 +11,18 @@ function M.extract_text(pdf_path)
   -- Use pdftotext with the -layout option to preserve layout
   local cmd = string.format('pdftotext -layout "%s" -', pdf_path)
   local handle = io.popen(cmd)
-  local result = handle:read("*a")
-  local success, exit_reason = handle:close()
 
-  if not success then
-    vim.api.nvim_err_writeln(string.format("PDFview: Failed to extract text from PDF. Exit reason: %s",
-      exit_reason or "Unknown error"))
+  -- Check if handle is nil
+  if not handle then
+    vim.api.nvim_err_writeln("PDFview: Failed to open process for pdftotext.")
+    return nil
+  end
+
+  local result = handle:read("*a")
+  local success, _, exit_code = handle:close()
+
+  if not success or exit_code ~= 0 then
+    vim.api.nvim_err_writeln("PDFview: Failed to extract text from PDF.")
     return nil
   end
 
