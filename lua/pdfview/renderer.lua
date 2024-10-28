@@ -11,6 +11,8 @@ local state = {
 function M.display_current_page()
   local buf = state.buf
 
+  -- Set buffer to modifiable before making changes
+  vim.api.nvim_set_option_value("modifiable", true, { buf = buf })
   -- Clear existing buffer content
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
 
@@ -19,6 +21,9 @@ function M.display_current_page()
 
   -- Set the lines in the buffer
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, page_lines)
+
+  -- Set buffer back to non-modifiable
+  vim.api.nvim_set_option_value("modifiable", false, { buf = buf })
 
   -- Update statusline or virtual text with page information
   M.update_page_info()
@@ -78,9 +83,6 @@ function M.display_text(text)
 
   -- Open a new window with the buffer
   vim.api.nvim_set_current_buf(buf)
-
-  -- Set up key mappings for navigation
-  M.setup_keymaps(buf)
 end
 
 -- Function to go to the next page
@@ -101,24 +103,6 @@ function M.previous_page()
   else
     vim.api.nvim_echo({ { "PDFview: Already at the first page.", "WarningMsg" } }, false, {})
   end
-end
-
--- Function to set up key mappings for navigation
-function M.setup_keymaps(buf)
-  local opts = { noremap = true, silent = true, buffer = buf }
-
-  -- Quit PDFview
-  vim.api.nvim_buf_set_keymap(buf, "n", "q", ":bd!<CR>", opts)
-
-  -- Next page
-  vim.api.nvim_buf_set_keymap(buf, "n", "J", "<Cmd>lua require('pdfview.renderer').next_page()<CR>", opts)
-
-  -- Previous page
-  vim.api.nvim_buf_set_keymap(buf, "n", "K", "<Cmd>lua require('pdfview.renderer').previous_page()<CR>", opts)
-
-  -- Optionally, map PageDown and PageUp
-  vim.api.nvim_buf_set_keymap(buf, "n", "<PageDown>", "<Cmd>lua require('pdfview.renderer').next_page()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(buf, "n", "<PageUp>", "<Cmd>lua require('pdfview.renderer').previous_page()<CR>", opts)
 end
 
 return M
