@@ -11,6 +11,9 @@ local state = {
 function M.display_current_page()
   local buf = state.buf
 
+  -- Set buffer to modifiable before making changes
+  vim.api.nvim_buf_set_option(buf, "modifiable", true)
+
   -- Clear existing buffer content
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
 
@@ -19,6 +22,9 @@ function M.display_current_page()
 
   -- Set the lines in the buffer
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, page_lines)
+
+  -- Set buffer back to non-modifiable
+  vim.api.nvim_buf_set_option(buf, "modifiable", false)
 
   -- Update statusline or virtual text with page information
   M.update_page_info()
