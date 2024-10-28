@@ -2,8 +2,9 @@ local M = {}
 
 -- Function to extract text from PDF using pdftotext
 function M.extract_text(pdf_path)
+  local test_path = "/Users/basel/Desktop/Clean Code.pdf"
   -- Check if the file exists
-  if vim.fn.filereadable(pdf_path) == 0 then
+  if vim.fn.filereadable(test_path) == 0 then
     vim.api.nvim_err_writeln("PDFview: File does not exist: " .. pdf_path)
     return nil
   end
