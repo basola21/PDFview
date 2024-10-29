@@ -28,4 +28,3 @@ function M.extract_text(pdf_path)
 end
 
 return M
-
