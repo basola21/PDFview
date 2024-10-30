@@ -13,7 +13,7 @@
 - **Customizable Pagination**: Set how many lines per page should be displayed.
 - **Virtual Text Display**: See page numbers displayed in the buffer.
 
-![Preview](https://imgur.com/a/WOVu43Q)
+![Preview](https://i.imgur.com/ClDZhnc.gif)
 
 ---
 
