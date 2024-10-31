@@ -1,32 +1,40 @@
 local M = {}
 
-function M.extract_text(pdf_path)
-  if vim.fn.filereadable(pdf_path) == 0 then
-    vim.api.nvim_err_writeln("PDFview: File does not exist: " .. pdf_path)
-    return nil
-  end
+-- Check if the PDF file exists
+local function file_exists(pdf_path)
+	return vim.fn.filereadable(pdf_path) ~= 0
+end
 
-  -- Use vim.fn.shellescape to properly escape the file path
-  local escaped_pdf_path = vim.fn.shellescape(pdf_path)
+-- Build the shell command for extracting text
+local function build_command(pdf_path, start_page, end_page)
+	local escaped_pdf_path = vim.fn.shellescape(pdf_path)
+	local page_args = ""
+	if start_page and end_page then
+		page_args = string.format("-f %d -l %d", start_page, end_page)
+	end
+	return string.format("pdftotext -layout %s %s -", page_args, escaped_pdf_path)
+end
 
-  -- Use pdftotext with the -layout option
-  local cmd = string.format('pdftotext -layout %s -', escaped_pdf_path)
-  vim.api.nvim_out_write("Running command: " .. cmd .. "\n") -- Debug output
+-- Run the shell command and return the output
+local function run_command(cmd)
+	local result = vim.fn.system(cmd)
+	if result and #result > 0 then
+		return result
+	else
+		vim.api.nvim_err_writeln("PDFview: Failed to extract text from PDF.")
+		return nil
+	end
+end
 
-  -- Use vim.fn.system to run the command and capture output
-  local result = vim.fn.system(cmd)
-  local exit_code = vim.v.shell_error
+-- Main function to extract text from the PDF with optional page range
+function M.extract_text(pdf_path, start_page, end_page)
+	if not file_exists(pdf_path) then
+		vim.api.nvim_err_writeln("PDFview: File does not exist: " .. pdf_path)
+		return nil
+	end
 
-  -- Proceed if text was extracted, even if exit_code is non-zero
-  if result and #result > 0 then
-    return result
-  else
-    vim.api.nvim_err_writeln(string.format(
-      "PDFview: Failed to extract text from PDF: %s\nExit Code: %s\nError Output: %s",
-      pdf_path, exit_code, result))
-    return nil
-  end
+	local cmd = build_command(pdf_path, start_page, end_page)
+	return run_command(cmd)
 end
 
 return M
-
