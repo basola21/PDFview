@@ -11,9 +11,8 @@ function M.open(pdf_path)
 	end
 end
 
--- Function to preview the first page of the PDF
 function M.preview_first_page(pdf_path)
-	local first_page_text = parser.extract_text(pdf_path, 1, 1) -- Extract only the first page
+	local first_page_text = parser.extract_text(pdf_path, 1, 1)
 	if first_page_text then
 		renderer.display_text(first_page_text)
 	else
