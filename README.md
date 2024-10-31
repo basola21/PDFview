@@ -71,6 +71,17 @@ map("n", "<leader>kk", "<cmd>:lua require('pdfview.renderer').previous_page()<CR
 3. **Extracting Text from a PDF**  
    When you select a PDF using Telescope, the plugin extracts the text using `pdftotext` and displays it in a buffer, allowing for easy reading or note-taking.
 
+4. **Adding Autocmd**  
+   Add these lines in your nvim config to open pdf's with PDFview:
+   ```lua
+    vim.api.nvim_create_autocmd("BufReadPost", {
+      pattern = "*.pdf",
+      callback = function()
+        local file_path = vim.api.nvim_buf_get_name(0)
+        require("pdfview").open(file_path)
+      end,
+    })
+   ```
 ---
 
 ## Configuration
