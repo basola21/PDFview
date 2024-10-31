@@ -23,7 +23,7 @@ end
 function M.telescope_open()
 	telescope.find_files({
 		prompt_title = "Select PDF",
-		find_command = { "fd", ".pdf" },
+    find_command = { "find", ".", "-type", "f", "-name", "*.pdf" },
 		attach_mappings = function(_, map)
 			map("i", "<CR>", function(prompt_bufnr)
 				local selected_file = require("telescope.actions.state").get_selected_entry(prompt_bufnr)
