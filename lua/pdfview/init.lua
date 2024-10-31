@@ -12,7 +12,7 @@ function M.open(pdf_path)
 end
 
 function M.telescope_open()
-  -- telescope prompt 
+	-- telescope prompt
 	telescope.find_files({
 		prompt_title = "Select PDF",
 		find_command = { "fd", ".pdf" },
@@ -21,7 +21,7 @@ function M.telescope_open()
 				local selected_file = require("telescope.actions.state").get_selected_entry(prompt_bufnr)
 				require("telescope.actions").close(prompt_bufnr)
 				local pdf_path = selected_file.path
-        -- open pdf
+				-- open pdf
 				M.open(pdf_path)
 			end)
 			return true
